@@ -1,0 +1,80 @@
+//*****************************************************************************************************
+//*****************************************************************************************************
+//Programmer: John Meyer
+//Date: 18/06/2020
+//Software: Microsoft Visual Studio 2019 Community Edition
+//Platform: Microsoft Windows 10 Student 64-bit
+//Purpose: Create, display and search a hashtable. Utlizes Contains() funtion.
+//*****************************************************************************************************
+//*****************************************************************************************************
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Collections;
+using System.Windows.Forms;
+
+namespace HashTableApp
+{
+    public partial class frmMain : Form
+    {
+        static Hashtable GetHashtable()//creates hashtable and method used to retrieve said hashtable
+        {
+            Hashtable myHash = new Hashtable();
+            myHash.Add("The Wolf of Wall Street", 8.5);
+            myHash.Add("Interstellar", 7.5);
+            myHash.Add("Back to the Future", 9);
+            myHash.Add("Inception", 7);
+
+            return myHash;
+        }
+        public frmMain()
+        {
+            InitializeComponent();
+        }
+
+        private void outputHashToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            lstResult.Items.Clear();//clears list
+            Hashtable myHash = GetHashtable();//retrieves hashtable
+            foreach (DictionaryEntry entry in myHash)//loops through each entry
+            {
+                lstResult.Items.Add(entry.Key + " " + entry.Value);//displays key and value in listbox
+            }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            Hashtable myHash = GetHashtable();
+            string searchItem;//declaring string variable
+            searchItem = txtSearch.Text;//variable searchItem is assigned value of text box
+            if (myHash.Contains(searchItem) == true)//contains() search if statement
+            {
+                MessageBox.Show(searchItem + " was found in list.");
+            }
+            else
+            {
+                MessageBox.Show(searchItem + " was not found in the list.");
+            }
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();//closes application
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
