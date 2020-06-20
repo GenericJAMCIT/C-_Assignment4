@@ -1,0 +1,85 @@
+//*****************************************************************************************************
+//*****************************************************************************************************
+//Programmer: John Meyer
+//Date: 18/06/2020
+//Software: Microsoft Visual Studio 2019 Community Edition
+//Platform: Microsoft Windows 10 Student 64-bit
+//Purpose: This application fills a DoublyLinked List from user input then displays with both forwards
+// and backwards. Referencing this youtube video https://www.youtube.com/watch?v=GcC5kW9tyOQ&t=106s
+//*****************************************************************************************************
+//*****************************************************************************************************
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using static DoublyLinkedListApp.LinkedList;
+
+namespace DoublyLinkedListApp
+{
+    public partial class frmMain : Form
+    {
+        LinkedList L = new LinkedList();//creates instance of linked list class
+        public frmMain()
+        {
+            InitializeComponent();
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try//try catch to verify entry is single character
+            {
+                //Converts text box value to char then assigns it to variable cLetter
+                char cLetter = Convert.ToChar(txtChar.Text.ToString()); 
+                L.AddFirst(cLetter);//adds variable to doublylinked list
+            }
+            catch (System.FormatException)
+            {
+                MessageBox.Show("Must be single character.");
+            }
+            txtChar.Clear();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            lblResult.Text = "";//clears label text
+            foreach (Node item in L)//loops through nodes in LinkedList inOrder method
+            {
+                lblResult.Text += item.Data;//displays data in label
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            lblResult.Text = "";
+            foreach (Node item in L.GetEnumeratorReverse())//loops through nodes in reverse order
+            {
+                lblResult.Text += item.Data;
+            }
+        }
+
+            private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void txtResult_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblResult_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
