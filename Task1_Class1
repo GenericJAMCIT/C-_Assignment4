@@ -1,0 +1,97 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using static DoublyLinkedListApp.LinkedList;
+
+namespace DoublyLinkedListApp
+{
+    //LinkedList class enabling IEnumerable over type node, allows for iteration over non-generic collection
+    public class LinkedList : IEnumerable<Node>
+    {
+        private Node head;//declaring head node
+        public Node First//getter method for head node
+        {
+            get { return head; }
+        }
+
+        private Node tail;//declaring tail nodes
+        public Node Last//getter method for tail nodes
+        {
+            get { return tail; }
+        }
+        //method 
+        public IEnumerator<Node> GetEnumerator()
+        {
+            Node current = tail;//sets current node to tail
+            while (current != null)//loops through until current node is null
+            {
+                yield return current;//returns current node
+                current = current.Previous;//sets current node to previous
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();//returns GetEnumerator()
+        }
+
+        public IEnumerable GetEnumeratorReverse()//reverse of GetEnumerator()
+        {
+            Node current = head;
+            while (current != null)
+            {
+                yield return current;
+                current = current.Next;
+            }
+        }
+
+        public class Node//node class
+        {
+            private char _data;//declaring char variable data
+            public char Data//get and set methods for data variable
+            {
+                get { return _data; }
+                set { _data = value; }
+            }
+
+            private Node _next;
+            public Node Next//get and set for next node
+            {
+                get { return _next; }
+                set { _next = value; }
+            }
+
+            private Node _previous;
+            public Node Previous//get and set for previous node
+            {
+                get { return _previous; }
+                set { _previous = value; }
+            }
+
+            public Node(char data)//assigns Data with char variable input
+            {
+                Data = data;
+            }
+
+        }
+
+        public void AddFirst(char data)//adds new node to head position
+        {
+            Node newNode = new Node(data);//creates new node
+            newNode.Next = head;
+
+            if (head == null)
+            {
+                tail = newNode;
+            }
+            else
+            {
+                head.Previous = newNode;
+            }
+            head = newNode;
+        }
+    }
+}
