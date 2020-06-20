@@ -1,0 +1,214 @@
+//*****************************************************************************************************
+//*****************************************************************************************************
+//Programmer: John Meyer
+//Date: 18/06/2020
+//Software: Microsoft Visual Studio 2019 Community Edition
+//Platform: Microsoft Windows 10 Student 64-bit
+//Purpose: This application fills a binary tree with integers from input then displays them sorted
+//using InOrder traversing method. Includes ability to search using Contains() method.
+//Referencing this youtube video https://www.youtube.com/watch?v=pN1RWeX47tg&t=769s
+//*****************************************************************************************************
+//*****************************************************************************************************
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Collections;
+using System.Windows.Forms;
+
+
+namespace BinarySearchTreeApp
+{
+    public partial class frmMain : Form
+    {
+        BinaryTree myTree = new BinaryTree();//creates classwide instance of BinaryTree
+
+        public static frmMain Instance { get; set; }//Singleton Pattern
+
+        public frmMain()
+        {
+            Instance = this;
+            InitializeComponent();
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int leaf = Convert.ToInt32(txtInput.Text.ToString());
+                myTree.Insert(leaf);
+            }
+            catch (System.FormatException)
+            {
+                MessageBox.Show("Must be an integer.");
+            }
+            txtInput.Clear();
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnDisplay_Click(object sender, EventArgs e)
+        {
+            myTree.InOrderTraversal();
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtInput_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            int leaf = Convert.ToInt32(txtSearch.Text.ToString());
+            var node = myTree.Find(leaf);
+            if (node == null)
+            {
+                lblFound.Text = "Integer not Found.";
+            }
+            else
+            {
+                lblFound.Text = leaf + " was found.";
+            }
+            myTree.Find(leaf);
+            txtSearch.Clear();
+        }
+        public class BinaryTree
+        {
+            private TreeNode root;
+            public TreeNode Root
+            {
+                get { return root; }
+            }
+
+            public TreeNode Find(int data)
+            {
+                if (root != null)
+                {
+                    return root.Find(data);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            public void Insert(int data)
+            {
+                if (root != null)
+                {
+                    root.Insert(data);
+                }
+                else
+                {
+                    root = new TreeNode(data);
+                }
+            }
+
+            public void InOrderTraversal()
+            {
+                if (root != null)
+                {
+                    root.InOrderTraversal();
+                }
+            }
+        }
+        public class TreeNode
+        {
+            private int data;
+
+            public int Data
+            {
+                get { return data; }
+            }
+
+            private TreeNode rightNode;
+            public TreeNode RightNode
+            {
+                get { return rightNode; }
+                set { rightNode = value; }
+            }
+
+            private TreeNode leftNode;
+            public TreeNode LeftNode
+            {
+                get { return leftNode; }
+                set { leftNode = value; }
+            }
+
+            public TreeNode(int value)
+            {
+                data = value;
+            }
+
+            public TreeNode Find(int value)
+            {
+                TreeNode currentNode = this;
+
+                while (currentNode != null)
+                {
+                    if (value == currentNode.Data)
+                    {
+                        return currentNode;
+                    }
+                    else if (value > currentNode.Data)
+                    {
+                        currentNode = currentNode.rightNode;
+                    }
+                    else
+                    {
+                        currentNode = currentNode.leftNode;
+                    }
+                }
+                return null;
+            }
+
+            public void Insert(int value)
+            {
+                if (value >= data)
+                {
+                    if (rightNode == null)
+                    {
+                        rightNode = new TreeNode(value);
+                    }
+                    else
+                    {
+                        rightNode.Insert(value);
+                    }
+                }
+                else
+                {
+                    if (leftNode == null)
+                    {
+                        leftNode = new TreeNode(value);
+                    }
+                    else
+                    {
+                        leftNode.Insert(value);
+                    }
+                }
+            }
+
+            public void InOrderTraversal()
+            {
+                if (leftNode != null)
+                    leftNode.InOrderTraversal();
+                frmMain.Instance.lstResult.Items.Add(data);
+
+                if (rightNode != null)
+                    rightNode.InOrderTraversal();
+            }
+        }
+    }
+}
